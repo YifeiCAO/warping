@@ -8,7 +8,8 @@ This is a repository of the ongoing project exploring the effect of cognitive co
 ## Summary
 
 This repository contains the following:
-- images: contain images of faces
+- images: contains images of faces
+- notebooks: contains all the jupyter notebooks to generate the figures and tsv files
 - analyze.py: impelentation of all the analysis
 - data.py: classes for impelmenting PyTorch dataset and dataloader
 - main.py: train and test the model
