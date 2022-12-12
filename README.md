@@ -46,18 +46,5 @@ This will train and test the model, create `results` and `figures` folder. The r
 
 
 
-## Usage
-```
-usage: main.py  [--use_cuda False][--seed=0][--print_every=10]
-                [--test_every 50][--analyze_every=50]
-                [--out_file='results.P'][--verbose=False]
-                [--use_images=False][--image_dir='images/faces16']
-                [--training_regime='grouped'][--grid_size=4]
-                [--ctx_order='first'][--n_runs=20][--n_steps=1000]
-                [--bs=32][--lr=0.001][--model_name='rnn']
-                [--trunc_mlp=False][--ctx_scale=1.0][--dim_red_method='pca']
-                [--measure_grad_norm=False][--inner_4x4=False][--step_by_step=False]
-```
-
 ## Figures and tsv files
-To generate the figures, run each of the jupyter notebooks under `notebooks` folder. The correponding tsv files will also be saved under `results/tsv` folder. 
+To generate the figures, run each of the jupyter notebooks under `notebooks` folder. The generated figures and tsv files will be saved under `figures` and `results/tsv` folders, respectively. 
