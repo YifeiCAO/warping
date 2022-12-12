@@ -23,17 +23,27 @@ This repository contains the following:
 - PyTorch
 - [torchvision](https://github.com/pytorch/vision/) that matches the PyTorch installation.
 	You can install them together at [pytorch.org](https://pytorch.org/get-started/locally/) to make sure of this.
-- install requirements by `pip install -r requirements.txt` or  install the packages separately using 
+- create a conda environment with the name 'warping': 
+    - conda create -n warping
+- install pip using 'conda install pip'
+- activate the environment you created: 
+    - conda activate warping
+- install requirements by `pip install -r requirements.txt` or  install the packages separately, for example: 
+    - ipykernel: `pip install ipykernel`
 	- statsmodels: `pip install statsmodels`
 	- sklearn: `pip install -U scikit-learn`
-
+    - saeborn: `pip install seaborn==0.11.1`
+- add the conda enviroment (called 'warping') to the jupyter kernel by using:
+    - python -m ipykernel install --user --name warping --display-name "warping"
 
 ## Train and test the model
 To train and test the model with the default parameters:
+
 ```bash
-python main.py
+./run_all_experiments.sh
 ```
-This will train and test the model and produce analysis results and save in the `../results/` directory. 
+This will train and test the model, create `results` and `figures` folder. The results of the saved models will be stored in the `results` folder. 
+
 
 
 ## Usage
@@ -48,3 +58,6 @@ usage: main.py  [--use_cuda False][--seed=0][--print_every=10]
                 [--trunc_mlp=False][--ctx_scale=1.0][--dim_red_method='pca']
                 [--measure_grad_norm=False][--inner_4x4=False][--step_by_step=False]
 ```
+
+## Figures and tsv files
+To generate the figures, run each of the jupyter notebooks under `notebooks` folder. The correponding tsv files will also be saved under `results/tsv` folder. 

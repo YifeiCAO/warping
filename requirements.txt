@@ -1,0 +1,7 @@
+ipykernel
+numpy
+pandas
+matplotlib
+statsmodels
+imageio
+seaborn==0.11.1
