@@ -1,4 +1,4 @@
-# The geometry of map-like representations under dynamic cognitive control
+# The representational geometry of cognitive maps under dynamic cognitive control 
 
 This is a repository of the ongoing project exploring the effect of cognitive control on the learned representation using deep neural network modeling experiments. 
 
