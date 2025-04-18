@@ -29,7 +29,7 @@ def train_meta_rl(run_i, model, args):
 
             # Step 1: Feed support set（不计算 loss）
             for ctx, f1, f2, y, info in support_set:
-                ctx = ctx.to(args.device)
+                ctx = torch.tensor(ctx).to(args.device).unsqueeze(0).long()
                 f1 = f1.to(args.device)
                 f2 = f2.to(args.device)
                 y_prev = torch.tensor([0]).to(args.device)  # 假设第一个 y_prev 是 0
