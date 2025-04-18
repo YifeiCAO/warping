@@ -34,6 +34,9 @@ parser.add_argument('--k_query', type=int, default=16)
 
 # Model
 parser.add_argument('--model_name', default='meta_rnn', choices=['meta_rnn', 'rnn', 'mlp', 'step_mlp', 'trunc_rnn', 'mlp_cc'])
+parser.add_argument('--ctx_scale', type=float, default=1.0,
+                    help='Scalar to multiply context layer (for "lesions")')
+
 
 
 def main(args):
