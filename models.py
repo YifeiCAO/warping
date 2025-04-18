@@ -18,6 +18,10 @@ def get_model(args):
     elif args.model_name == 'mlp_cc':
         print('Model is a CognitiveController')
         model = CognitiveController(args) 
+    elif args.model_name == 'meta_rnn':
+        print('Model is a RNNMetaLearner')
+        model = RNNMetaLearner(args)
+
     return model
 
 class CNN(nn.Module):
@@ -467,3 +471,57 @@ class CognitiveController(nn.Module):
         reps = {'hidden': hidden} # [batch, hidden_dim]
 
         return output, reps
+    
+class RNNMetaLearner(nn.Module):
+    def __init__(self, args):
+        super(RNNMetaLearner, self).__init__()
+        self.use_images = args.use_images
+        self.ctx_scale = args.ctx_scale
+        self.n_ctx = 2
+        self.state_dim = 32
+        self.hidden_dim = 128
+        self.output_dim = 2
+        self.n_states = 16
+
+        # Context embedding
+        self.ctx_embedding = nn.Embedding(self.n_ctx, self.state_dim)
+        nn.init.xavier_normal_(self.ctx_embedding.weight)
+
+        # Face embedding
+        if self.use_images:
+            self.face_embedding = CNN(self.state_dim)
+        else:
+            self.face_embedding = nn.Embedding(self.n_states, self.state_dim)
+            nn.init.xavier_normal_(self.face_embedding.weight)
+
+        # y_prev embedding (2 classes: 0 or 1)
+        self.y_embedding = nn.Embedding(2, self.state_dim)
+        nn.init.xavier_normal_(self.y_embedding.weight)
+
+        # LSTM
+        self.lstm = nn.LSTMCell(4 * self.state_dim, self.hidden_dim)
+
+        # Output layer
+        self.out = nn.Linear(self.hidden_dim, self.output_dim)
+
+        # Hidden state
+        self.h = None
+        self.c = None
+
+    def reset_hidden(self, batch_size=1):
+        self.h = torch.zeros(batch_size, self.hidden_dim).to(next(self.parameters()).device)
+        self.c = torch.zeros(batch_size, self.hidden_dim).to(next(self.parameters()).device)
+
+    def forward(self, ctx, f1, f2, y_prev):
+        ctx_embed = self.ctx_embedding(ctx.squeeze(0))  # [batch, state_dim]
+        f1_embed = self.face_embedding(f1.squeeze(0))   # [batch, state_dim]
+        f2_embed = self.face_embedding(f2.squeeze(0))   # [batch, state_dim]
+        y_embed = self.y_embedding(y_prev)              # [batch, state_dim]
+
+        x = torch.cat([ctx_embed, f1_embed, f2_embed, y_embed], dim=-1)  # [batch, 4*state_dim]
+
+        self.h, self.c = self.lstm(x, (self.h, self.c))
+        out = self.out(self.h)
+
+        return out, {'hidden': self.h}
+
