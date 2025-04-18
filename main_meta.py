@@ -40,6 +40,7 @@ parser.add_argument('--ctx_scale', type=float, default=1.0,
 
 
 def main(args):
+    print("ARGS:", vars(args))
     # Set device
     device = torch.device("cuda:0" if args.use_cuda and torch.cuda.is_available() else "cpu")
     args.device = device
